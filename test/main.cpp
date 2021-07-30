@@ -9,39 +9,37 @@ void teste1() {
     using namespace std;
 
     pq.push(3);
-    pq.push(2);
     pq.push(15);
-
-    cout << "Size is " << pq.size() << endl;
-
-    cout << std::to_string(pq.top()) << " ";
-    pq.pop();
-
-    cout << pq.top() << " ";
-    pq.pop();
-
     pq.push(5);
     pq.push(4);
     pq.push(45);
+    pq.push(1);
+    pq.push(2);
+    pq.push(50);
+    pq.push(55);
+    pq.push(0);
+    pq.push(0);
+    pq.push(0);
+    pq.push(0);
+    pq.push(0);
+    pq.push(100);
+    pq.push(0);
+    pq.push(0);
+    pq.push(0);
+    pq.push(0);
+    pq.push(0);
 
     cout << endl << "Size is " << pq.size() << endl;
+    cout << endl << "height is " << pq.height() << endl;
 
-    cout << pq.top() << " ";
-    pq.pop();
+    pq.showRaw();
 
-    cout << pq.top() << " ";
-    pq.pop();
-
-    cout << pq.top() << " ";
-    pq.pop();
-
-    cout << pq.top() << " ";
-    pq.pop();
+    while (pq.empty() == false) {
+        cout << pq.top() << " ";
+        pq.pop();
+    }
 
     cout << endl << boolalpha << pq.empty();
-
-    pq.top(); // top operation on an empty heap
-    pq.pop(); // pop operation on an empty heap
 }
 
 void teste2() {

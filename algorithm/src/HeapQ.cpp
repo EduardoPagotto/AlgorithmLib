@@ -4,7 +4,7 @@
 #include <stdexcept>
 
 HeapQ::HeapQ(bool max) : max(max) {}
-HeapQ::~HeapQ() {}
+HeapQ::~HeapQ() { heap.clear(); }
 
 void HeapQ::swap(const int& indiceA, const int& indiceB) {
     int temp = heap[indiceA];
@@ -101,7 +101,7 @@ void HeapQ::pop() {
 int HeapQ::top() {
     try {
         // if the heap has no elements, throw an exception
-        if (size() == 0) {
+        if (heap.size() == 0) {
             throw std::out_of_range("Vector<X>::at() : "
                                     "index is out of range(Heap underflow)");
         }
@@ -126,12 +126,7 @@ void HeapQ::reBuild() {
         heapify_down(index);
 }
 
-// rem main: https://www.techiedelight.com/min-heap-max-heap-implementation-c/
-// ref cpp: http://neutrofoton.github.io/blog/2016/12/29/c-plus-plus-priority-queue-with-comparator/
-// ref: http://each.uspnet.usp.br/digiampietri/ACH2023/javaec/Heap/heap.c
-void HeapQ::debugData() {
-
-    // TODO: Testar
+void HeapQ::showRaw() {
 
     int tamanho = heap.size();
     for (int index = 1; index <= tamanho; index++)
@@ -140,9 +135,7 @@ void HeapQ::debugData() {
     printf("\n");
 }
 
-int HeapQ::alturaHeap() {
-
-    // TODO: Testar
+int HeapQ::height() {
 
     int altura = -1;
     int indice = 1;

@@ -16,8 +16,8 @@ class HeapQ {
 
     // extra
     void reBuild();
-    void debugData();
-    int alturaHeap();
+    void showRaw();
+    int height();
     void preOrdem(const int& indice);
 
   private:
