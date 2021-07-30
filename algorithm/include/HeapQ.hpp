@@ -5,7 +5,7 @@
 
 class HeapQ {
   public:
-    HeapQ();
+    HeapQ(bool max = true);
     virtual ~HeapQ();
     inline unsigned int size() const { return heap.size(); }
     inline bool empty() const { return heap.size() == 0; }
@@ -18,7 +18,7 @@ class HeapQ {
     void reBuild();
     void debugData();
     int alturaHeap();
-    void preOrdem(int atual);
+    void preOrdem(const int& indice);
 
   private:
     inline int parentIndex(const int& i) const { return (i - 1) / 2; }
@@ -29,6 +29,7 @@ class HeapQ {
     void heapify_up(const int& indice);
 
     std::vector<int> heap;
+    bool max;
 };
 
 #endif

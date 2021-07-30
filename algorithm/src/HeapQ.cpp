@@ -3,7 +3,7 @@
 #include <iostream>
 #include <stdexcept>
 
-HeapQ::HeapQ() {}
+HeapQ::HeapQ(bool max) : max(max) {}
 HeapQ::~HeapQ() {}
 
 void HeapQ::swap(const int& indiceA, const int& indiceB) {
@@ -18,14 +18,26 @@ void HeapQ::heapify_down(const int& indice) {
     int rightIndex = this->rightChildIndex(indice);
     int newIndex = indice;
 
-    // compare `heap[i]` with its leftIndex and rightIndex child
-    // and find the newIndex value
-    if (leftIndex < this->size() && heap[leftIndex] > heap[indice]) {
-        newIndex = leftIndex;
-    }
+    if (this->max) {
+        // compare `heap[i]` with its leftIndex and rightIndex child
+        // and find the newIndex value
+        if (leftIndex < heap.size() && heap[leftIndex] > heap[indice]) {
+            newIndex = leftIndex;
+        }
 
-    if (rightIndex < size() && heap[rightIndex] > heap[newIndex]) {
-        newIndex = rightIndex;
+        if (rightIndex < heap.size() && heap[rightIndex] > heap[newIndex]) {
+            newIndex = rightIndex;
+        }
+    } else {
+        // compare `heap[i]` with its leftIndex and rightIndex child
+        // and find the newIndex value
+        if (leftIndex < heap.size() && heap[leftIndex] < heap[indice]) {
+            newIndex = leftIndex;
+        }
+
+        if (rightIndex < heap.size() && heap[rightIndex] < heap[newIndex]) {
+            newIndex = rightIndex;
+        }
     }
 
     // swap with a child having greater value and
@@ -38,8 +50,12 @@ void HeapQ::heapify_down(const int& indice) {
 
 // Recursive heapify-up algorithm
 void HeapQ::heapify_up(const int& indice) {
+    int t1 = heap[this->parentIndex(indice)];
+    int t2 = heap[indice];
+
     // check if the node at index `i` and its parent violate the heap property
-    if (indice && heap[this->parentIndex(indice)] < heap[indice]) {
+    bool doSwap = this->max ? (t1 < t2) : (t1 > t2);
+    if (indice && doSwap) {
         // swap the two if heap property is violated
         swap(indice, this->parentIndex(indice));
 
@@ -48,51 +64,13 @@ void HeapQ::heapify_up(const int& indice) {
     }
 }
 
-// TODO: implementar para o minimo
-// void HeapQ::heapify_down(const int& indice) {
-//     // get leftIndex and rightIndex child of node at index `i`
-//     int leftIndex = this->leftChildIndex(indice);
-//     int rightIndex = this->rightChildIndex(indice);
-//     int newIndex = indice;
-
-//     // compare `heap[i]` with its leftIndex and rightIndex child
-//     // and find the newIndex value
-//     if (leftIndex < this->size() && heap[leftIndex] < heap[indice]) {
-//         newIndex = leftIndex;
-//     }
-
-//     if (rightIndex < size() && heap[rightIndex] < heap[newIndex]) {
-//         newIndex = rightIndex;
-//     }
-
-//     // swap with a child having greater value and
-//     // call heapify-down on the child
-//     if (newIndex != indice) {
-//         swap(heap[indice], heap[newIndex]);
-//         heapify_down(newIndex);
-//     }
-// }
-
-// TODO: implementar para minimo
-// // Recursive heapify-up algorithm
-// void HeapQ::heapify_up(const int& indice) {
-//     // check if the node at index `i` and its parent violate the heap property
-//     if (indice && heap[this->parentIndex(indice)] > heap[indice]) {
-//         // swap the two if heap property is violated
-//         swap(heap[indice], heap[this->parentIndex(indice)]);
-
-//         // call heapify-up on the parent
-//         heapify_up(this->parentIndex(indice));
-//     }
-// }
-
 // insert key into the heap
 void HeapQ::push(int key) {
     // insert a new element at the end of the vector
     heap.push_back(key);
 
     // get element index and call heapify-up procedure
-    int index = this->size() - 1;
+    int index = heap.size() - 1;
     heapify_up(index);
 }
 
@@ -100,7 +78,7 @@ void HeapQ::push(int key) {
 void HeapQ::pop() {
     try {
         // if the heap has no elements, throw an exception
-        if (size() == 0) {
+        if (heap.size() == 0) {
             throw std::out_of_range("Vector<X>::at() : "
                                     "index is out of range(Heap underflow)");
         }
@@ -155,9 +133,9 @@ void HeapQ::debugData() {
 
     // TODO: Testar
 
-    int tamanho = this->heap.size();
+    int tamanho = heap.size();
     for (int index = 1; index <= tamanho; index++)
-        printf("%d ", this->heap[index]);
+        printf("%d ", heap[index]);
 
     printf("\n");
 }
@@ -168,20 +146,20 @@ int HeapQ::alturaHeap() {
 
     int altura = -1;
     int indice = 1;
-    while (indice <= this->heap.size()) {
+    while (indice <= heap.size()) {
         indice = this->leftChildIndex(indice);
         altura++;
     }
     return altura;
 }
 
-void HeapQ::preOrdem(int atual) {
+void HeapQ::preOrdem(const int& indice) {
 
     // TODO: Testar
 
-    if (atual <= this->heap.size()) {
-        printf("%i ", this->heap[atual]);
-        this->preOrdem(this->leftChildIndex(atual));
-        this->preOrdem(this->rightChildIndex(atual));
+    if (indice <= heap.size()) {
+        printf("%i ", heap[indice]);
+        this->preOrdem(this->leftChildIndex(indice));
+        this->preOrdem(this->rightChildIndex(indice));
     }
 }

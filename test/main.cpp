@@ -3,7 +3,7 @@
 #include <iostream>
 
 void teste1() {
-    HeapQ pq;
+    HeapQ pq(false);
 
     // Note: The element's value decides priority
     using namespace std;
