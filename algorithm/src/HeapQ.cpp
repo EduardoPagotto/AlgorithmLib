@@ -1,18 +1,24 @@
 #include "include/HeapQ.hpp"
-
 #include <iostream>
 #include <stdexcept>
 
-HeapQ::HeapQ(bool max) : max(max) {}
-HeapQ::~HeapQ() { heap.clear(); }
+template <class T>
+HeapQ<T>::HeapQ(bool max) : max(max) {}
 
-void HeapQ::swap(const int& indiceA, const int& indiceB) {
+template <class T>
+HeapQ<T>::~HeapQ() {
+    heap.clear();
+}
+
+template <class T>
+void HeapQ<T>::swap(const int& indiceA, const int& indiceB) {
     int temp = heap[indiceA];
     heap[indiceA] = heap[indiceB];
     heap[indiceB] = temp;
 }
 
-void HeapQ::heapify_down(const int& indice) {
+template <class T>
+void HeapQ<T>::heapify_down(const int& indice) {
     // get leftIndex and rightIndex child of node at index `i`
     int leftIndex = this->leftChildIndex(indice);
     int rightIndex = this->rightChildIndex(indice);
@@ -49,7 +55,8 @@ void HeapQ::heapify_down(const int& indice) {
 }
 
 // Recursive heapify-up algorithm
-void HeapQ::heapify_up(const int& indice) {
+template <class T>
+void HeapQ<T>::heapify_up(const int& indice) {
     int t1 = heap[this->parentIndex(indice)];
     int t2 = heap[indice];
 
@@ -65,7 +72,8 @@ void HeapQ::heapify_up(const int& indice) {
 }
 
 // insert key into the heap
-void HeapQ::push(int key) {
+template <class T>
+void HeapQ<T>::push(const T& key) {
     // insert a new element at the end of the vector
     heap.push_back(key);
 
@@ -75,7 +83,8 @@ void HeapQ::push(int key) {
 }
 
 // Function to remove an element with the highest priority (present at the root)
-void HeapQ::pop() {
+template <class T>
+void HeapQ<T>::pop() {
     try {
         // if the heap has no elements, throw an exception
         if (heap.size() == 0) {
@@ -98,7 +107,8 @@ void HeapQ::pop() {
 }
 
 // Function to return an element with the highest priority (present at the root)
-int HeapQ::top() {
+template <class T>
+T HeapQ<T>::top() {
     try {
         // if the heap has no elements, throw an exception
         if (heap.size() == 0) {
@@ -117,7 +127,8 @@ int HeapQ::top() {
     return 0;
 }
 
-void HeapQ::reBuild() {
+template <class T>
+void HeapQ<T>::reBuild() {
 
     // TODO: Testar
 
@@ -126,7 +137,8 @@ void HeapQ::reBuild() {
         heapify_down(index);
 }
 
-void HeapQ::showRaw() {
+template <class T>
+void HeapQ<T>::showRaw() {
 
     int tamanho = heap.size();
     for (int index = 1; index <= tamanho; index++)
@@ -135,7 +147,8 @@ void HeapQ::showRaw() {
     printf("\n");
 }
 
-int HeapQ::height() {
+template <class T>
+int HeapQ<T>::height() {
 
     int altura = -1;
     int indice = 1;
@@ -146,7 +159,8 @@ int HeapQ::height() {
     return altura;
 }
 
-void HeapQ::preOrdem(const int& indice) {
+template <class T>
+void HeapQ<T>::preOrdem(const int& indice) {
 
     // TODO: Testar
 

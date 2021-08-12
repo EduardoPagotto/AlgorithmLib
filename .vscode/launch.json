@@ -5,10 +5,32 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Test",
+            "name": "HeapTest",
             "type": "cppdbg",
             "request": "launch",
-            "program": "${workspaceRoot}/bin/Test",
+            "program": "${workspaceRoot}/bin/heapTest",
+            "args": [
+                "-p",
+                "${workspaceRoot}"
+            ],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "BitMapFreeTest",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceRoot}/bin/bitMapTest",
             "args": [
                 "-p",
                 "${workspaceRoot}"

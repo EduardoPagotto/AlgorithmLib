@@ -1,12 +1,16 @@
 #include "include/Heap.hpp"
 #include "include/HeapQ.hpp"
+//#include "src/HeapQ.cpp"
 #include <iostream>
 
 void teste1() {
-    HeapQ pq(false);
 
-    // Note: The element's value decides priority
-    using namespace std;
+    // // typedef HeapQ<int> HeapQQ;
+
+    HeapQ<uint32_t> pq(false);
+
+    // // Note: The element's value decides priority
+    // using namespace std;
 
     pq.push(3);
     pq.push(15);
@@ -29,17 +33,17 @@ void teste1() {
     pq.push(0);
     pq.push(0);
 
-    cout << endl << "Size is " << pq.size() << endl;
-    cout << endl << "height is " << pq.height() << endl;
+    std::cout << std::endl << "Size is " << pq.size() << std::endl;
+    std::cout << std::endl << "height is " << pq.height() << std::endl;
 
     pq.showRaw();
 
     while (pq.empty() == false) {
-        cout << pq.top() << " ";
+        std::cout << pq.top() << " ";
         pq.pop();
     }
 
-    cout << endl << boolalpha << pq.empty();
+    std::cout << std::endl << std::boolalpha << pq.empty();
 }
 
 void teste2() {

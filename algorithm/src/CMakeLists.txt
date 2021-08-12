@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.18.4)
 PROJECT(Algorithm)
 
 #define objetos a compilar
-set (AlgorithmSource HeapQ.cpp Heap.cpp)
+set (AlgorithmSource HeapQ.cpp Heap.cpp BitMapFree.cpp)
 
 #define os includes
 set (AlgorithmInclude ${CMAKE_SOURCE_DIR}/algorithm) # Raiz do projeto

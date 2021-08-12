@@ -1,8 +1,10 @@
 #ifndef __HEAP_Q__HPP
 #define __HEAP_Q__HPP
 
+#include <cstdint>
 #include <vector>
 
+template <class T>
 class HeapQ {
   public:
     HeapQ(bool max = true);
@@ -10,9 +12,9 @@ class HeapQ {
     inline unsigned int size() const { return heap.size(); }
     inline bool empty() const { return heap.size() == 0; }
 
-    void push(int key);
+    void push(const T& key);
     void pop();
-    int top();
+    T top();
 
     // extra
     void reBuild();
@@ -28,8 +30,11 @@ class HeapQ {
     void heapify_down(const int& indice);
     void heapify_up(const int& indice);
 
-    std::vector<int> heap;
+    std::vector<T> heap;
     bool max;
 };
+
+template class HeapQ<int>;
+template class HeapQ<uint32_t>;
 
 #endif

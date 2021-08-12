@@ -1,5 +1,6 @@
 {
     "cmake.configureOnOpen": false,
     "editor.formatOnSave": true,
-    "C_Cpp.errorSquiggles": "Disabled"
+    "C_Cpp.errorSquiggles": "Disabled",
+    "editor.minimap.enabled": false
 }
