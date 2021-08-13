@@ -1,25 +1,45 @@
 #include "include/BitMapFree.hpp"
 
-BitMapFree::BitMapFree() {}
+BitMapFree::BitMapFree(const uint32_t& begin, const uint32_t& length) {
+
+    this->limites.begin = begin;
+    this->limites.end = begin + length;
+    maxOffSet = 0;
+}
 
 BitMapFree::~BitMapFree() {}
 
-void BitMapFree::used(const uint32_t& pos, const uint32_t& size) {
+void BitMapFree::used(const uint32_t& begin, const uint32_t& length) {
 
-    uint32_t begin = pos;
-    uint32_t end = pos + size;
+    BitMapDataSet b;
+    b.begin = begin;
+    b.end = begin + length;
 
-    // BitMapDataSet b;
-    // b.begin = end;
-    // b.end = end;
+    for (auto it = dataSet.begin(); it != dataSet.end(); it++) {
 
-    // bool newBegin = false;
-    // bool newEnd = false;
+        if (begin == it->end) {
+            it->end = b.end;
 
-    // for (auto it = this->dataSet.begin(); this->dataSet.end(); it++) {
+            auto next = std::next(it);
+            if (next != dataSet.end()) {
+                if (it->end == next->begin) {
+                    it->end = next->end;
 
-    //     if (b.begin == it->begin) {}
-    // }
+                    dataSet.erase(next);
+                }
+            }
+
+            if (it->end > this->maxOffSet)
+                this->maxOffSet = it->end;
+
+            return;
+        }
+    }
+
+    if (b.end > this->maxOffSet)
+        this->maxOffSet = b.end;
+
+    this->dataSet.push_back(b);
 }
 
 // bool binarySearch(std::vector<uint32_t>& array, const uint32_t& search, uint32_t& pos) {
