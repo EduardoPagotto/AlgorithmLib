@@ -2,11 +2,11 @@
 
 int main() {
 
-    BitMapFree m(0, 10);
+    BitMapFree m(0, 100);
     m.used(0, 1);
-    m.used(1, 2);
-    m.used(5, 2);
-    m.used(3, 2);
+    m.used(1, 1);
+    m.used(2, 1);
+    m.used(3, 1);
 
     return 0;
 }

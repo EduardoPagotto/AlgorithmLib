@@ -1,5 +1,12 @@
 #include "include/BitMapFree.hpp"
 
+bool compareSet(const BitMapDataSet& a, const BitMapDataSet& b) {
+    if (a.begin < b.begin)
+        return true;
+
+    return false;
+}
+
 BitMapFree::BitMapFree(const uint32_t& begin, const uint32_t& length) {
 
     this->limites.begin = begin;
@@ -11,35 +18,46 @@ BitMapFree::~BitMapFree() {}
 
 void BitMapFree::used(const uint32_t& begin, const uint32_t& length) {
 
-    BitMapDataSet b;
-    b.begin = begin;
-    b.end = begin + length;
+    uint32_t end = begin + length;
+
+    bool alterado = false;
 
     for (auto it = dataSet.begin(); it != dataSet.end(); it++) {
 
-        if (begin == it->end) {
-            it->end = b.end;
+        if ((begin <= it->end) && (begin > it->begin)) {
+            it->end = end;
+            alterado = true;
+        }
 
-            auto next = std::next(it);
-            if (next != dataSet.end()) {
-                if (it->end == next->begin) {
-                    it->end = next->end;
-
-                    dataSet.erase(next);
-                }
+        auto prev = std::next(it);
+        if (prev != it) {
+            if (end == prev->begin) {
+                prev->begin = begin;
+                alterado = true;
             }
+        }
 
-            if (it->end > this->maxOffSet)
-                this->maxOffSet = it->end;
+        auto next = std::next(it);
+        if (next != dataSet.end()) {
 
+            if ((it->end >= next->begin) && (it->end < next->end)) {
+                it->end = next->end;
+                dataSet.erase(next);
+            }
+        }
+
+        if (alterado) {
+            dataSet.sort(compareSet);
             return;
         }
     }
 
-    if (b.end > this->maxOffSet)
-        this->maxOffSet = b.end;
-
+    BitMapDataSet b;
+    b.begin = begin;
+    b.end = end;
     this->dataSet.push_back(b);
+
+    dataSet.sort(compareSet);
 }
 
 // bool binarySearch(std::vector<uint32_t>& array, const uint32_t& search, uint32_t& pos) {
