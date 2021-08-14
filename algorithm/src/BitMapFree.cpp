@@ -16,7 +16,7 @@ BitMapFree::BitMapFree(const uint32_t& begin, const uint32_t& length) {
 
 BitMapFree::~BitMapFree() {}
 
-void BitMapFree::used(const uint32_t& begin, const uint32_t& length) {
+void BitMapFree::markAsUsed(const uint32_t& begin, const uint32_t& length) {
 
     uint32_t end = begin + length;
 
@@ -67,6 +67,141 @@ void BitMapFree::used(const uint32_t& begin, const uint32_t& length) {
 
     dataSet.sort(compareSet);
 }
+
+uint32_t BitMapFree::markAsUnUsed(const uint32_t& begin, const uint32_t& length) {
+
+    uint32_t ret = 0;
+    uint32_t end = begin + length;
+
+    for (auto it = this->dataSet.begin(); it != this->dataSet.end(); it++) {
+
+        if ((begin <= it->begin) && (end >= it->end)) {
+
+            // remove o que estiver dentro do range
+            dataSet.erase(it);
+            ret++;
+
+        } else if ((begin > it->begin) && (end < it->end)) {
+
+            // remove um pedaço no meio do range
+            uint32_t old_end = it->end;
+            it->end = begin;
+
+            this->dataSet.push_back(BitMapDataSet{end, old_end});
+
+            ret++;
+
+            dataSet.sort(compareSet);
+
+            break;
+
+        } else if ((begin < it->begin) && (end < it->end) && (end > it->begin)) {
+
+            // remove do inicio
+            it->begin = end;
+            ret++;
+
+        } else if ((begin > it->begin) && (end > it->end) && (begin < it->end)) {
+            // remove do final
+            it->end = begin;
+            ret++;
+        }
+    }
+
+    return ret;
+}
+
+uint32_t BitMapFree::usedLength() {
+
+    uint32_t ret = 0;
+
+    for (auto block : this->dataSet)
+        ret += block.end - block.begin;
+
+    return ret;
+}
+
+std::vector<BlockDataSet> BitMapFree::usedRegions(const uint32_t& minLength) {
+    std::vector<BlockDataSet> ret;
+
+    uint32_t val;
+    for (auto block : this->dataSet) {
+
+        val = block.end - block.begin;
+        if (val >= minLength)
+            ret.push_back(BlockDataSet{block.begin, val});
+    }
+
+    return ret;
+}
+
+std::vector<BlockDataSet> BitMapFree::unUsedRegions(const uint32_t& minLength) {
+    std::vector<BlockDataSet> ret;
+
+    uint32_t val;
+
+    if (this->dataSet.size() > 0) {
+
+        auto it = this->dataSet.begin();
+        val = it->begin - limites.begin;
+        if (val >= minLength)
+            ret.push_back(BlockDataSet{it->begin, val});
+
+        it++;
+        for (; it != this->dataSet.end(); it++) {
+            auto prev = std::prev(it);
+            val = it->begin - prev->end;
+
+            if (val >= minLength)
+                ret.push_back(BlockDataSet{prev->end, val});
+        }
+
+        auto last = this->dataSet.back();
+        val = limites.end - last.end;
+
+        if (val >= minLength)
+            ret.push_back(BlockDataSet{last.end, val});
+
+    } else {
+        val = limites.end - limites.begin;
+        if (val >= minLength)
+            ret.push_back(BlockDataSet{limites.begin, val});
+    }
+
+    return ret;
+}
+
+uint32_t BitMapFree::unUsedLength() {
+
+    uint32_t val = 0;
+    if (this->dataSet.size() > 0) {
+
+        auto it = this->dataSet.begin();
+        val += it->begin - limites.begin;
+
+        it++;
+        for (; it != this->dataSet.end(); it++) {
+            auto prev = std::prev(it);
+            val += it->begin - prev->end;
+        }
+
+        auto last = this->dataSet.back();
+        val += limites.end - last.end;
+
+    } else {
+        val += limites.end - limites.begin;
+    }
+
+    return val;
+}
+
+// bool BitMapFree::firstFree(uint32_t &pos, uint32_t &length) {
+
+//     for(auto: block, this->dataSet){
+
+//     }
+
+// }
 
 // bool binarySearch(std::vector<uint32_t>& array, const uint32_t& search, uint32_t& pos) {
 

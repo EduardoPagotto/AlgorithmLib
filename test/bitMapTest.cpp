@@ -3,20 +3,18 @@
 int main() {
 
     BitMapFree m(0, 100);
-    m.used(0, 1);
-    m.used(1, 1);
 
-    m.used(5, 1);
-    m.used(4, 1);
+    uint32_t tot = m.unUsedLength();
 
-    m.used(8, 1);
-    m.used(10, 1);
-    m.used(9, 1);
+    m.markAsUsed(0, 5);
 
-    m.used(12, 1);
-    m.used(13, 1);
+    m.markAsUsed(10, 5);
 
-    m.used(15, 1);
+    m.markAsUsed(20, 5);
+
+    m.markAsUnUsed(10, 1);
+
+    auto lista = m.usedRegions();
 
     return 0;
 }
