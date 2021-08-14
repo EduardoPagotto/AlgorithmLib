@@ -24,34 +24,42 @@ void BitMapFree::used(const uint32_t& begin, const uint32_t& length) {
 
     for (auto it = dataSet.begin(); it != dataSet.end(); it++) {
 
+        // adiciona length ao final de bloco ja existente
         if ((begin <= it->end) && (begin > it->begin)) {
             it->end = end;
             alterado = true;
         }
 
-        auto prev = std::next(it);
-        if (prev != it) {
-            if (end == prev->begin) {
-                prev->begin = begin;
-                alterado = true;
-            }
+        // Adiciona length antes de bloco ja existente
+        if (end == it->begin) {
+            it->begin = begin;
+            alterado = true;
         }
 
+        // adiciona espaco entre 2 do blocos ja existente
         auto next = std::next(it);
         if (next != dataSet.end()) {
-
             if ((it->end >= next->begin) && (it->end < next->end)) {
                 it->end = next->end;
+                // remove residuo do ultimo bloco
                 dataSet.erase(next);
             }
         }
 
+        // verifica off-set de bloco alterado
         if (alterado) {
-            dataSet.sort(compareSet);
+            if (end > maxOffSet)
+                maxOffSet = end;
+
             return;
         }
     }
 
+    // verifica o offset de bloco novo
+    if (end > maxOffSet)
+        maxOffSet = end;
+
+    // novo espaco longe dos espacos ja existentes
     BitMapDataSet b;
     b.begin = begin;
     b.end = end;
