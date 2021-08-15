@@ -20,7 +20,7 @@ class BitMapFree {
     BitMapFree(const uint32_t& begin, const uint32_t& length);
     ~BitMapFree();
 
-    void markAsUsed(const uint32_t& begin, const uint32_t& length);
+    bool markAsUsed(const uint32_t& begin, const uint32_t& length);
     uint32_t markAsUnUsed(const uint32_t& begin, const uint32_t& length);
 
     bool isUsed(const uint32_t& begin, const uint32_t& length);

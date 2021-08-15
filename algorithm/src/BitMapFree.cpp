@@ -16,13 +16,21 @@ BitMapFree::BitMapFree(const uint32_t& begin, const uint32_t& length) {
 
 BitMapFree::~BitMapFree() {}
 
-void BitMapFree::markAsUsed(const uint32_t& begin, const uint32_t& length) {
+bool BitMapFree::markAsUsed(const uint32_t& begin, const uint32_t& length) {
 
     uint32_t end = begin + length;
+
+    // fora de faixa
+    if ((end > this->limites.end) || (begin < limites.begin))
+        return false;
 
     bool alterado = false;
 
     for (auto it = dataSet.begin(); it != dataSet.end(); it++) {
+
+        // node ja existe
+        if ((begin >= it->begin) && (end <= it->end))
+            return false;
 
         // adiciona length ao final de bloco ja existente
         if ((begin <= it->end) && (begin > it->begin)) {
@@ -51,7 +59,7 @@ void BitMapFree::markAsUsed(const uint32_t& begin, const uint32_t& length) {
             if (end > maxOffSet)
                 maxOffSet = end;
 
-            return;
+            return true;
         }
     }
 
@@ -66,6 +74,7 @@ void BitMapFree::markAsUsed(const uint32_t& begin, const uint32_t& length) {
     this->dataSet.push_back(b);
 
     dataSet.sort(compareSet);
+    return true;
 }
 
 uint32_t BitMapFree::markAsUnUsed(const uint32_t& begin, const uint32_t& length) {
