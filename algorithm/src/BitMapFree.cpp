@@ -75,36 +75,38 @@ uint32_t BitMapFree::markAsUnUsed(const uint32_t& begin, const uint32_t& length)
 
     for (auto it = this->dataSet.begin(); it != this->dataSet.end(); it++) {
 
-        if ((begin <= it->begin) && (end >= it->end)) {
+        if (begin <= it->begin) {
+            if (end >= it->end) {
+                // remove o que estiver dentro do range
+                it = dataSet.erase(it); // move foward
+                it = std::prev(it);     // move backward
 
-            // remove o que estiver dentro do range
-            dataSet.erase(it);
-            ret++;
+                ret++;
+            } else if (end > it->begin) {
+                // remove do inicio
+                it->begin = end;
+                ret++;
+            }
 
-        } else if ((begin > it->begin) && (end < it->end)) {
+        } else if (begin > it->begin) {
 
-            // remove um pedaço no meio do range
-            uint32_t old_end = it->end;
-            it->end = begin;
+            if (end < it->end) {
+                // remove um pedaço no meio do range
+                uint32_t old_end = it->end;
+                it->end = begin;
 
-            this->dataSet.push_back(BitMapDataSet{end, old_end});
+                this->dataSet.push_back(BitMapDataSet{end, old_end});
 
-            ret++;
+                ret++;
 
-            dataSet.sort(compareSet);
+                dataSet.sort(compareSet);
+                break;
 
-            break;
-
-        } else if ((begin < it->begin) && (end < it->end) && (end > it->begin)) {
-
-            // remove do inicio
-            it->begin = end;
-            ret++;
-
-        } else if ((begin > it->begin) && (end > it->end) && (begin < it->end)) {
-            // remove do final
-            it->end = begin;
-            ret++;
+            } else if (begin < it->end) {
+                // remove do final
+                it->end = begin;
+                ret++;
+            }
         }
     }
 
@@ -145,7 +147,7 @@ std::vector<BlockDataSet> BitMapFree::unUsedRegions(const uint32_t& minLength) {
         auto it = this->dataSet.begin();
         val = it->begin - limites.begin;
         if (val >= minLength)
-            ret.push_back(BlockDataSet{it->begin, val});
+            ret.push_back(BlockDataSet{limites.begin, val});
 
         it++;
         for (; it != this->dataSet.end(); it++) {
