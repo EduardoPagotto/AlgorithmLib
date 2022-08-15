@@ -1,6 +1,6 @@
 #include "include/Heap.hpp"
 #include "include/HeapQ.hpp"
-//#include "src/HeapQ.cpp"
+#include "src/HeapQ.cpp"
 #include <iostream>
 
 void teste1() {
@@ -12,6 +12,7 @@ void teste1() {
     // // Note: The element's value decides priority
     // using namespace std;
 
+    pq.push(3);
     pq.push(3);
     pq.push(15);
     pq.push(5);

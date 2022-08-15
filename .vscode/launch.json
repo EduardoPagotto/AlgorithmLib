@@ -5,7 +5,7 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "HeapTest",
+            "name": "HeapTest-gdb",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceRoot}/bin/heapTest",
@@ -27,7 +27,15 @@
             ]
         },
         {
-            "name": "BitMapFreeTest",
+            "name": "HeapTest-lldb",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/heapTest",
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "BitMapFreeTest-gdb",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceRoot}/bin/bitMapTest",
@@ -47,6 +55,14 @@
                     "ignoreFailures": true
                 }
             ]
-        }
+        },
+        {
+            "name": "BitMapFreeTest-lldb",
+            "type": "lldb",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/bitMapTest",
+            "args": [],
+            "cwd": "${workspaceFolder}"
+        },
     ]
 }
