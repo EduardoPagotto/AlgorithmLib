@@ -1,6 +1,4 @@
-#ifndef __HEAP_H
-#define __HEAP_H
-
+#pragma once
 typedef struct {
     int* A;
     int tamanhoAtual;
@@ -16,5 +14,3 @@ void percursoPreOrdem(HEAP* heap, int atual);
 int alturaHeap(HEAP* heap);
 void heapSort(HEAP* heap);
 bool inserirHeap(HEAP* heap, int chave);
-
-#endif

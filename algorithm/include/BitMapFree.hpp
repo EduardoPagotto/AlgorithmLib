@@ -1,6 +1,4 @@
-#ifndef __BITMAPFREE__HPP__
-#define __BITMAPFREE__HPP__
-
+#pragma once
 #include <list>
 #include <stdint.h>
 #include <vector>
@@ -40,5 +38,3 @@ class BitMapFree {
     BitMapDataSet limites;
     uint32_t maxOffSet;
 };
-
-#endif

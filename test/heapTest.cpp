@@ -8,12 +8,8 @@ void teste1() {
     // // typedef HeapQ<int> HeapQQ;
 
     HeapQ<uint32_t> pq(false);
-
-    // // Note: The element's value decides priority
-    // using namespace std;
-
     pq.push(3);
-    pq.push(3);
+    pq.push(0);
     pq.push(15);
     pq.push(5);
     pq.push(4);
@@ -23,22 +19,39 @@ void teste1() {
     pq.push(50);
     pq.push(55);
     pq.push(0);
+    pq.push(16);
     pq.push(0);
-    pq.push(0);
-    pq.push(0);
+    pq.push(19);
     pq.push(0);
     pq.push(100);
     pq.push(0);
     pq.push(0);
     pq.push(0);
-    pq.push(0);
-    pq.push(0);
+    pq.push(6);
 
-    std::cout << std::endl << "Size is " << pq.size() << std::endl;
-    std::cout << std::endl << "height is " << pq.height() << std::endl;
+    std::cout << std::endl << "Size: " << pq.size() << std::endl;
+    std::cout << std::endl << "Height: " << pq.height() << std::endl;
 
-    pq.showRaw();
+    // pq.reBuild();
 
+    std::vector<uint32_t> dados;
+    pq.getRaw(dados);
+
+    std::cout << "RAW(" << dados.size() << "):";
+    for (const auto& d : dados) {
+        std::cout << d << " ";
+    }
+    std::cout << std::endl;
+
+    dados.clear();
+    pq.preOrdem(0, dados);
+    std::cout << "Pre(" << dados.size() << "):";
+    for (const auto& d : dados) {
+        std::cout << d << " ";
+    }
+    std::cout << std::endl;
+
+    std::cout << "Ord(" << pq.size() << "):";
     while (pq.empty() == false) {
         std::cout << pq.top() << " ";
         pq.pop();
